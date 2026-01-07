@@ -32,10 +32,12 @@ export class Renderer {
                 // Set initial position immediately on enter
                 .attr('cx', d => d.x)
                 .attr('cy', d => d.y),
-            update => update
-                // Update position if data changed (e.g., dragging)
-                .attr('cx', d => d.x)
-                .attr('cy', d => d.y)
+                // Inside nodeSelection.join in Renderer.js
+                update => update
+                    .attr('cx', d => d.x)
+                    .attr('cy', d => d.y)
+                    .attr('stroke', d => d.id === this.selectedId ? '#ff0000' : '#333')
+                    .attr('stroke-width', d => d.id === this.selectedId ? 4 : 1.5)
         );
 
         // 2. DRAW WAYS
@@ -46,19 +48,19 @@ export class Renderer {
 
         const waySelection = this.wayLayer.selectAll('.way')
             .data(ways, d => d.id);
-
-        waySelection.join(
-            enter => enter.append('path')
-                .attr('class', 'way')
-                .attr('fill', 'none')
-                .attr('stroke', 'blue')
-                .attr('stroke-width', 3)
-                .attr('stroke-linejoin', 'round')
-                .attr('stroke-linecap', 'round')
-                // Set initial path immediately
-                .attr('d', d => lineGen(d.nodes)),
-            update => update
-                .attr('d', d => lineGen(d.nodes))
-        );
+            // Update this in Renderer.js
+            waySelection.join(
+                enter => enter.append('path')
+                    .attr('class', 'way')
+                    .attr('stroke', 'blue')
+                    .attr('stroke-width', 2),
+                update => update
+                    .attr('d', d => lineGen(d.nodes))
+                    // NEW LOGIC: If the first and last node are the same, fill it!
+                    .attr('fill', d => {
+                        const isClosed = d.nodes.length > 2 && d.nodes[0] === d.nodes[d.nodes.length - 1];
+                        return isClosed ? 'rgba(0, 123, 255, 0.2)' : 'none';
+                    })
+            );
     }
 }

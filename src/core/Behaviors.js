@@ -66,6 +66,18 @@ export class Behaviors {
                     this.graph.addNodeToWay(nodeId, this.activeWayId);
                 }
             }
+
+                            // Add this inside setupEvents() in Behaviors.js
+                window.addEventListener('keydown', (e) => {
+                    if (e.key === 'Delete' || e.key === 'Backspace') {
+                        // This requires a 'selectedId' property which you can set on click
+                        if (this.selectedId) {
+                            this.graph.removeNode(this.selectedId);
+                            this.selectedId = null;
+                            console.log("Deleted selected node");
+                        }
+                    }
+                });
         });
     }
 }

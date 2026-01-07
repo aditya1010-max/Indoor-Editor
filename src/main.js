@@ -46,6 +46,12 @@ d3.select('#browse-btn').on('click', function() {
     updateButtonStyles(this);
 });
 
+d3.select('#clear-btn').on('click', () => {
+    if (confirm("Are you sure you want to delete everything?")) {
+        graph.clear(); // We added this method to Graph.js earlier!
+    }
+});
+
 function updateButtonStyles(activeBtn) {
     d3.selectAll('button').classed('active', false);
     d3.select(activeBtn).classed('active', true);
