@@ -50,18 +50,19 @@ export class Graph {
             this._notify(); 
         }
     }
-        // Add to Graph.js
-        getStats() {
-            const closedWays = this.allWays.filter(w => w.nodes[0] === w.nodes[w.nodes.length - 1]);
-            return {
-                totalNodes: this.nodes.size,
-                totalWays: this.ways.size,
-                totalRooms: closedWays.length,
-                orphanedNodes: this.allNodes.filter(n => 
-                    !this.allWays.some(w => w.nodes.includes(n.id))
-                ).length
-            };
-        }
+    
+    // Add to Graph.js
+    getStats() {
+        const closedWays = this.allWays.filter(w => w.nodes[0] === w.nodes[w.nodes.length - 1]);
+        return {
+            totalNodes: this.nodes.size,
+            totalWays: this.ways.size,
+            totalRooms: closedWays.length,
+            orphanedNodes: this.allNodes.filter(n => 
+                !this.allWays.some(w => w.nodes.includes(n.id))
+            ).length
+        };
+    }
 
     // Getters for D3
     get allWays() {
